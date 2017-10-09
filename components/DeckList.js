@@ -4,7 +4,6 @@ import { View, Text,StyleSheet,FlatList,TouchableOpacity, Alert } from 'react-na
 import { fetchDecks,removeEntry } from '../utils/api'
 import { orange,purple,white } from '../utils/colors'
 import { connect } from 'react-redux';
-import { objectToArray } from '../utils/helpers'
 import { Container, TextButton } from './common';
 import { NoDeck } from './NoDeck';
 import { receiveDecks,removeDeck } from '../actions/index'

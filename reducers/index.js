@@ -1,8 +1,8 @@
-import { NEW_DECK , RECEIVE_DECKS, REMOVE_DECK, NEW_CARD} from '../actions'
+import { NEW_DECK , RECEIVE_DECKS, REMOVE_DECK, NEW_CARD, PLAY_CARD} from '../actions'
 import { submitEntry  } from '../utils/api'
 
 export default function decks (state = {}, action) {
-const { title, question, answer } = action
+const { title, question, answer,result } = action
 
   switch (action.type) {
   // deck case
@@ -42,7 +42,26 @@ const { title, question, answer } = action
       }
     }
 
-
+    case PLAY_CARD: {
+        submitEntry({ key: title,
+                      entry: { title,
+                               questions: [...state[title].questions.map(item => {
+                                 return item.question === question
+                                   ? { result, question: item.question, answer: item.answer }
+                                   : item
+                               })] } })
+        return {
+          ...state,
+          [title]: {
+            title,
+            questions: [...state[title].questions.map(item => {
+              return item.question === question
+                ? { result, question: item.question, answer: item.answer }
+                : item
+            })]
+          }
+        }
+      }
 
 
     default :

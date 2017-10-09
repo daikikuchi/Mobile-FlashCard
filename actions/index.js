@@ -2,6 +2,8 @@ export const NEW_DECK = "new_deck"
 export const RECEIVE_DECKS = "receive_decks"
 export const REMOVE_DECK = 'remove_deck'
 export const NEW_CARD = 'new_card'
+export const PLAY_CARD = 'play_card'
+
 
 export function addDeck({title}) {
   console.log(title)
@@ -38,3 +40,14 @@ export function addCard({ title, question, answer }) {
     answer,
   }
 }
+
+export function playCard({ title, question, result }) {
+  console.log(question)
+  console.log(result)
+  return {
+    type: PLAY_CARD,
+    title,
+    question,
+    result,
+  }
+ }

@@ -7,12 +7,14 @@ import reducer from './reducers'
 import { Constants } from 'expo'
 import { FontAwesome, Ionicons,Foundation } from '@expo/vector-icons'
 import { orange,purple,white } from './utils/colors'
+import { setLocalNotification } from './utils/notification'
 import AddDeck from './components/AddDeck'
 import DeckList from './components/DeckList'
 import DeckDetail from './components/DeckDetail'
 import NoDeck from './components/NoDeck'
 import AddCard from './components/AddCard'
 import QuizView from './components/QuizView'
+import CompleteView from './components/CompleteView'
 
 const Tabs = TabNavigator({
   Decks: {
@@ -87,6 +89,17 @@ const MainNavigator = StackNavigator({
       }
     }
    },
+   CompleteView: {
+     screen: CompleteView,
+     navigationOptions: {
+      title: 'Result',
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: orange,
+      }
+    }
+   },
+
 })
 
 function FlashCardBar({ backgroundColor, ...props }) {
@@ -98,6 +111,9 @@ function FlashCardBar({ backgroundColor, ...props }) {
 }
 
 export default class App extends React.Component {
+  componentDidMount() {
+  setLocalNotification()
+}
   render() {
     return (
       <Provider store={createStore(reducer)}>

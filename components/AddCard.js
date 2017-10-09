@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { View, Text,StyleSheet, Alert } from 'react-native'
+import { View, Text,StyleSheet, Alert,KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux';
 import { submitEntry  } from '../utils/api'
 import { Container, Input, Button } from './common'
@@ -61,7 +61,7 @@ class AddCard extends Component {
 
 
     return(
-      <View style={addCardContainer}>
+      <KeyboardAvoidingView style={addCardContainer} behavior="padding">
 
         <Container style={addStyleToContainer}>
 
@@ -85,7 +85,7 @@ class AddCard extends Component {
             Create
         </Button>
 
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

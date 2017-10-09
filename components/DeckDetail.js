@@ -47,7 +47,7 @@ class DeckDetail extends Component {
        } else {
          navigation.navigate(
           'QuizView',
-          {title}
+          {title},
         )
       }
     }}

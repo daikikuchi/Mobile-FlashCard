@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text,StyleSheet } from 'react-native'
+import { View, Text,StyleSheet,KeyboardAvoidingView } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux';
 import { submitEntry  } from '../utils/api'
@@ -61,7 +61,7 @@ class AddDeck extends Component {
 
 
     return (
-    <View style={addDeckContainer}>
+    <KeyboardAvoidingView style={addDeckContainer} behavior="padding">
 
       <Text style={textStyle}>
           Create a New Deck
@@ -82,7 +82,7 @@ class AddDeck extends Component {
             Create
         </Button>
 
-    </View>
+    </KeyboardAvoidingView>
     );
   }
 }
