@@ -3,7 +3,7 @@
 This is a mobile app that allows users to study collections of flashcards. The app will allow users to create different categories of flashcards called "decks", add flashcards to those decks, then take quizzes on those decks.
 I used create-react-native-app to build my project.
 
-![Demo](https://postimg.org/image/1pge39a43v/)
+![Demo](https://s1.postimg.org/1b9yce1t8v/flashcards.gif)
 
 ### Dependencies
 - Please refer to package.json file. 
