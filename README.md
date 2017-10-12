@@ -9,7 +9,7 @@ I used create-react-native-app to build my project.
 ### Test
 - This application is tested on iPhone 7 Plus.
 
-### To Rub
+### To Run
 - Install yarn 
 - Download this repository or git clone https://github.com/daikikuchi/Mobile-FlashCard.git
 - yarn install
