@@ -3,10 +3,10 @@ import { View, Text,ScrollView,StyleSheet,Dimensions} from 'react-native'
 import { connect } from 'react-redux'
 import FlipCard from 'react-native-flip-card'
 import Swiper from 'react-native-deck-swiper'
-import { TextButton } from './common';
+import { TextButton,Button } from './common';
 
 import { setLocalNotification, clearLocalNotification } from '../utils/notification'
-import { orange,purple,white,red } from '../utils/colors'
+import { orange,purple,white,red, gray } from '../utils/colors'
 const { width, height } = Dimensions.get('window')
 import { playCard } from '../actions/index'
 
@@ -25,7 +25,6 @@ class QuizView extends Component {
     this.setState({
       flashCards: selectedQuestions,
       total: selectedQuestions.length,
-
     })
   }
 
@@ -60,7 +59,7 @@ class QuizView extends Component {
 
     // from Connect(Store)
     const { deck, playCard} = this.props
-    console.log(playCard)
+    console.log(deck)
 
     // navigation
     const { navigation } = this.props
@@ -71,14 +70,17 @@ class QuizView extends Component {
 
     // to  keep records of number of cards, and results
     const questions = deck.questions
+    console.log(questions)
     const allQuestions = questions.length
     const unanswered = questions.filter(question => question.result === null ).length
-    const correct = questions.filter(question => question.result === 'right').length
+    const correct = questions.filter(question => question.result === 'correct').length
+    console.log(correct)
 
 
 
     return(
       <View style={styles.quizContainer}>
+
 
         <Swiper
           ref={swiper => {
@@ -88,49 +90,49 @@ class QuizView extends Component {
           renderCard={this.renderCard}
           onSwipedLeft={index => {
             console.log(flashCards[index].question)
-            playCard({ title:title, question: flashCards[index].question, result: 'incorrect' })
+            playCard({ title: title, question: flashCards[0].question, result: 'incorrect' })
 
-            clearLocalNotification()
-              .then(setLocalNotification)
+            // clearLocalNotification()
+            //   .then(setLocalNotification)
           }}
           onSwipedRight={index => {
-            playCard({ title:title, question: flashCards[index].question, result: 'correct' })
+            playCard({ title: title, question: flashCards[index].question, result: 'correct' })
 
-            clearLocalNotification()
-              .then(setLocalNotification)
+            // clearLocalNotification()
+            //   .then(setLocalNotification)
           }}
           onSwipedAll={() => {
             this.props.navigation.navigate(
               'CompleteView',
-              // Creat the key of first CardQuiz page, pass it between CardQuiz and Result, and finally go back from it in Result page
-              { deck, correct, total: allQuestions }
+              { deck, correct, total: allQuestions,title }
             )
           }}
-          overlayLabels={{
-            left: {
-              title: 'NOT YET',
-              swipeColor: red,
-              backgroundOpacity: '0.75',
-              fontColor: white
-            },
-            right: {
-              title: 'GOT IT',
-              swipeColor: orange,
-              backgroundOpacity: '0.75',
-              fontColor: white
-            },
-          }}
-          animateOverlayLabelsOpacity
-          animateCardOpacity
-          backgroundColor={white}
-          verticalSwipe={false}
-          cardVerticalMargin={0}
-          cardHorizontalMargin={0}
-          marginTop={80}
-          marginBottom={110}
+          // overlayLabels={{
+          //     left: {
+          //       title: 'NOT YET',
+          //       swipeColor: red,
+          //       backgroundOpacity: '0.75',
+          //       fontColor: white
+          //     },
+          //     right: {
+          //       title: 'GOT IT',
+          //       swipeColor: orange,
+          //       backgroundOpacity: '0.75',
+          //       fontColor: white
+          //     },
+          //   }}
+            animateOverlayLabelsOpacity
+            animateCardOpacity
+            backgroundColor={white}
+            verticalSwipe={true}
+            cardVerticalMargin={0}
+            cardHorizontalMargin={0}
+            marginTop={140}
 
-        >
-        </Swiper>
+          >
+
+
+          </Swiper>
 
        <View>
         {total !== 0
@@ -142,6 +144,22 @@ class QuizView extends Component {
             </View>}
 
 
+          {/* <View style={styles.buttonContainer}>
+            <Button onPress={() => {
+              questions.map(item =>
+              playCard({ title: deck.title, question: item.question, result: 'correct' })
+            )}}>Correct</Button>
+            <Button>Incorrect</Button>
+          </View> */}
+
+          <Text style={styles.textExplanation}>
+            If your guess is correct, swipe right, otherwise swipe left.
+          </Text>
+          <Text style={styles.textExplanation}>
+            To check the answer, Click the card.
+          </Text>
+
+
           <TextButton onPress={() => {
             navigation.goBack()
             questions.map(item => playCard({ title: deck.title, question: item.question, result: null }))
@@ -149,7 +167,11 @@ class QuizView extends Component {
 
           </TextButton>
 
+
+
         </View>
+
+
       </View>
     )
   }
@@ -165,6 +187,19 @@ cardNumber: {
     textAlign: 'center',
     marginTop: 10,
     marginBottom: 10,
+  },
+  textExplanation: {
+    marginTop:5,
+    marginBottom: 10,
+    marginLeft:3,
+    marginRight:3,
+    textAlign:'center',
+    fontSize:16,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginTop:5,
+    marginBottom:5
   },
   flipCard: {
     backgroundColor: white,

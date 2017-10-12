@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   reset: {
    textAlign: 'center',
    color: orange,
+  
   },
 })
 
