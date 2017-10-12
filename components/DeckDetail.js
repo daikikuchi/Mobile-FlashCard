@@ -1,100 +1,81 @@
-import React, {Component} from 'react'
-import { View, Text,StyleSheet,Alert } from 'react-native'
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { Container, Button } from './common'
+import { Container, Button } from './common';
 
 class DeckDetail extends Component {
   static navigationOptions = ({ navigation }) => {
-      const { deckTitle } = navigation.state.params
+    const { deckTitle } = navigation.state.params;
 
-
-      return {
-         title: deckTitle
-      }
-  }
+    return {
+      title: deckTitle
+    };
+  };
 
   render() {
-    console.log(this.props)
     // Navigation
-    const { navigation } = this.props
-    const {title, questions } = this.props.deck
-    const { deckText,cardText,detailContainer } = styles
+    const { navigation } = this.props;
+    const { title, questions } = this.props.deck;
+    const { deckText, cardText, detailContainer } = styles;
 
-    return(
+    return (
       <View style={detailContainer}>
-        <Container style={{flexDirection:'column'}}>
-            <Text style={deckText}>{title}</Text>
-             <View style={{flexDirection: 'row'}}>
-                <Text style={cardText}>{questions.length} cards</Text>
-              </View>
+        <Container style={{ flexDirection: 'column' }}>
+          <Text style={deckText}>
+            {title}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={cardText}>
+              {questions.length} cards
+            </Text>
+          </View>
         </Container>
         <View>
-          <Button onPress={() => navigation.navigate(
-              'AddCard',
-              {title}
-            )}
+          <Button onPress={() => navigation.navigate('AddCard', { title })}>
+            Add Card
+          </Button>
+          <Button
+            onPress={() => {
+              if (questions.length === 0) {
+                Alert.alert('Please add a card', null, [{ text: 'OK' }], {
+                  cancelable: false
+                });
+              } else {
+                navigation.navigate('QuizView', { title });
+              }
+            }}
           >
-          Add Card
-        </Button>
-        <Button onPress={() => {
-       if(questions.length ===　0 ) {
-         Alert.alert　(
-                    'Please add a card',
-                    null,
-                    [{text: 'OK'}],
-                    { cancelable: false }
-                  )
-       } else {
-         navigation.navigate(
-          'QuizView',
-          {title},
-        )
-      }
-    }}
-    >Start Quiz</Button>
-
+            Start Quiz
+          </Button>
         </View>
-
       </View>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
-   deckText: {
+  deckText: {
     fontSize: 25,
-    justifyContent:'center',
+    justifyContent: 'center',
     alignItems: 'center',
-    width:350,
-    height:100
+    width: 350,
+    height: 100
   },
   detailContainer: {
-    flex:1,
-  　justifyContent:'space-around',
-　　flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'space-around',
+    flexDirection: 'column'
   },
   cardText: {
-     fontSize: 15,
-     flex:1
-  },
-})
+    fontSize: 15,
+    flex: 1
+  }
+});
 
+function mapStateToProps(decks, { navigation }) {
+  const { deckTitle } = navigation.state.params;
 
-function mapStateToProps(decks,{ navigation }) {
+  return { deck: decks[deckTitle] };
+}
 
-  console.log(decks)
-  const { deckTitle } = navigation.state.params
-  // const deck = decks[deckTitle]
-  // console.log(deck)
-  // const {deckTitle} = navigation.state.params)
-  console.log(deckTitle)
-  // console.log(decks)
-
-   return { deck: decks[deckTitle] };
-
-};
-
-
-export default connect(mapStateToProps,
-null,
-)(DeckDetail)
+export default connect(mapStateToProps, null)(DeckDetail);

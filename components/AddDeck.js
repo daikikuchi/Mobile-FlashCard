@@ -1,76 +1,64 @@
-import React, { Component } from 'react'
-import { View, Text,StyleSheet,KeyboardAvoidingView } from 'react-native'
-import { NavigationActions } from 'react-navigation'
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { submitEntry  } from '../utils/api'
+import { submitEntry } from '../utils/api';
 import { addDeck } from '../actions';
-import { Container, Input, Button } from './common'
+import { Container, Input, Button } from './common';
 
 class AddDeck extends Component {
-
   state = {
-     deckName:"",
-     fieldError: false
-  }
+    deckName: '',
+    fieldError: false
+  };
 
-     submit = () => {
-      const deckName = this.state.deckName.trim()
-      // mapDispatchToProps
-      const { addDeck } = this.props
-      console.log(addDeck)
+  submit = () => {
+    const deckName = this.state.deckName.trim();
+    // mapDispatchToProps
+    const { addDeck } = this.props;
 
+    if (deckName) {
+      submitEntry({ key: deckName, entry: { title: deckName, questions: [] } });
 
-        if(deckName) {
-          console.log(deckName)
-          submitEntry({key:deckName, entry:{ title: deckName, questions:[] }})
+      this.toDetail(deckName);
 
-          this.toDetail(deckName)
+      addDeck({ title: deckName });
+      this.setState(() => ({
+        deckName: ''
+      }));
+    } else {
+      this.setState({ fieldError: true });
+    }
+  };
 
-          addDeck({title: deckName})
-          this.setState(() => ({
-            deckName:""
-          }))
+  handleChange = deckName => {
+    this.setState({ deckName });
+    this.setState({ fieldError: false });
+  };
 
-
-        }
-        else {
-          this.setState({fieldError: true})
-        }
-      }
-
-     handleChange = deckName => {
-       this.setState({deckName})
-       this.setState({fieldError: false})
-      }
-
-   toDetail = (deckName) => {
-
-   this.props.navigation.dispatch(NavigationActions.navigate({
-      params: { deckTitle: deckName },
-      routeName: 'DeckDetail',
- }))
- }
-
+  toDetail = deckName => {
+    this.props.navigation.dispatch(
+      NavigationActions.navigate({
+        params: { deckTitle: deckName },
+        routeName: 'DeckDetail'
+      })
+    );
+  };
 
   render() {
-    console.log(this.state)
-    const { addDeckContainer, textStyle,errorTextStyle} = styles
+    const { addDeckContainer, textStyle, errorTextStyle } = styles;
 
     //  ComponentState
-    const { deckName,fieldError  } = this.state
-
+    const { deckName, fieldError } = this.state;
 
     return (
-    <KeyboardAvoidingView style={addDeckContainer} behavior="padding">
+      <KeyboardAvoidingView style={addDeckContainer} behavior="padding">
+        <Text style={textStyle}>Create a New Deck</Text>
 
-      <Text style={textStyle}>
-          Create a New Deck
-      </Text>
-
-        {fieldError && <Text style={errorTextStyle}> Please fill in the form</Text> }
+        {fieldError &&
+          <Text style={errorTextStyle}> Please fill in the form</Text>}
 
         <Container>
-
           <Input
             placeholder="Deck Title"
             value={deckName}
@@ -78,15 +66,11 @@ class AddDeck extends Component {
           />
         </Container>
 
-        <Button onPress={this.submit}>
-            Create
-        </Button>
-
-    </KeyboardAvoidingView>
+        <Button onPress={this.submit}>Create</Button>
+      </KeyboardAvoidingView>
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   addDeckContainer: {
@@ -96,7 +80,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
     marginLeft: 30,
     marginTop: 50,
-    marginBottom: 70,
+    marginBottom: 70
   },
   errorTextStyle: {
     fontSize: 20,
@@ -105,24 +89,14 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontSize: 30,
-    marginTop: 50,
+    marginTop: 50
   }
+});
 
-
-})
-
-// const mapStateToProps = (state) => {
-//    const{ name, phone, shift} = state.employeeForm;
-//    return { name, phone, shift };
-// };
-
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    addDeck: (deckName) => dispatch(addDeck(deckName))
- }
+    addDeck: deckName => dispatch(addDeck(deckName))
+  };
 }
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(AddDeck)
+export default connect(null, mapDispatchToProps)(AddDeck);

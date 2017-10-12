@@ -1,19 +1,18 @@
-import React from 'react'
-import { Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { orange, white } from '../../utils/colors'
-  // if style undefined, set it to an empty object
-  // style object come from prop
-  const Button = ({ onPress, children }) => {
-     const { buttonStyle, textStyle } = styles;
+import React from 'react';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { orange, white } from '../../utils/colors';
 
-     return (
-        <TouchableOpacity onPress={onPress} style={buttonStyle}>
-        <Text style={textStyle}>
-          {children}
-        </Text>
-        </TouchableOpacity>
-     );
-  };
+const Button = ({ onPress, children }) => {
+  const { buttonStyle, textStyle } = styles;
+
+  return (
+    <TouchableOpacity onPress={onPress} style={buttonStyle}>
+      <Text style={textStyle}>
+        {children}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   textStyle: {
@@ -36,6 +35,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: 150
   }
-})
+});
 
 export { Button };

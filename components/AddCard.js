@@ -1,116 +1,102 @@
-import React, {Component} from 'react'
-import { View, Text,StyleSheet, Alert,KeyboardAvoidingView } from 'react-native'
+import React, { Component } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Alert,
+  KeyboardAvoidingView
+} from 'react-native';
 import { connect } from 'react-redux';
-import { submitEntry  } from '../utils/api'
-import { Container, Input, Button } from './common'
-import { addCard } from '../actions/index'
+import { submitEntry } from '../utils/api';
+import { Container, Input, Button } from './common';
+import { addCard } from '../actions/index';
 
 class AddCard extends Component {
-
   state = {
     question: '',
-    answer: '',
-  }
+    answer: ''
+  };
 
   submit = () => {
-   const trimedQuestion = this.state.question.trim()
-   const trimedAnswer = this.state.answer.trim()
+    const trimedQuestion = this.state.question.trim();
+    const trimedAnswer = this.state.answer.trim();
 
-   const { addCard,navigation } = this.props
-   // Navigation
-    const { title } = navigation.state.params
+    const { addCard, navigation } = this.props;
+    // Navigation
+    const { title } = navigation.state.params;
 
-   if(trimedQuestion === ''|| trimedAnswer === '') {
-     Alert.alert(
-                'Please fill in both question and answer',
-                null,
-                [{text: 'OK'}],
-                { cancelable: false }
-              )
-              return
-            }
-            console.log(trimedQuestion)
+    if (trimedQuestion === '' || trimedAnswer === '') {
+      Alert.alert(
+        'Please fill in both question and answer',
+        null,
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+      return;
+    }
 
-            // submitEntry({ key: title,
-            //   entry: { title, questions: [{ result: null, trimedQuestion, trimedAnswer },
-            //      ...state[title].questions] } })
-            navigation.goBack()
+    navigation.goBack();
 
-　　　　　　　addCard({ title, question: trimedQuestion, answer: trimedAnswer })
+    addCard({ title, question: trimedQuestion, answer: trimedAnswer });
 
-
-
-            this.setState(() => ({
-              question:"",
-              answer:""
-            }))
-
-
-   }
-
-
-
+    this.setState(() => ({
+      question: '',
+      answer: ''
+    }));
+  };
 
   render() {
-   // styles
-   const {addCardContainer,addStyleToContainer} = styles
+    // styles
+    const { addCardContainer, addStyleToContainer } = styles;
 
-   // state
-   const { question, answer } = this.state
-   console.log(this.props)
+    // state
+    const { question, answer } = this.state;
 
-
-    return(
+    return (
       <KeyboardAvoidingView style={addCardContainer} behavior="padding">
-
         <Container style={addStyleToContainer}>
-
           <Input
             placeholder="What is a question?"
             value={question}
-            onChangeText={(question) => {this.setState({question})}}
+            onChangeText={question => {
+              this.setState({ question });
+            }}
           />
         </Container>
         <Container style={addStyleToContainer}>
-
           <Input
             placeholder="Answer for the question"
             value={answer}
-            onChangeText={(answer) => {this.setState({answer})}}
-            multiline = {true}
+            onChangeText={answer => {
+              this.setState({ answer });
+            }}
+            multiline={true}
           />
         </Container>
 
-        <Button onPress={this.submit}>
-            Create
-        </Button>
-
+        <Button onPress={this.submit}>Create</Button>
       </KeyboardAvoidingView>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
-  addCardContainer:{
-  flex: 1,
-  justifyContent: 'center',
-  marginRight: 30,
-  marginLeft: 30,
+  addCardContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    marginRight: 30,
+    marginLeft: 30
   },
   addStyleToContainer: {
     marginTop: 10,
     marginBottom: 20
   }
-})
+});
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    addCard: (data) => dispatch(addCard(data)),
-  }
+    addCard: data => dispatch(addCard(data))
+  };
 }
 
-
-export default connect(
-  null,
-  mapDispatchToProps,
-)(AddCard)
+export default connect(null, mapDispatchToProps)(AddCard);
